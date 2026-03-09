@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h2 style="color: var(--gold); text-align: center;">Centro de Atención Luxury</h2>
+    <div style="max-width: 500px; margin: 0 auto;">
+        <p>📍 <strong>Ubicación:</strong> Malchinguí, Pichincha, Ecuador.</p>
+        <p>📞 <strong>Teléfono:</strong> +593 999 999 999</p>
+        <p>📧 <strong>Correo:</strong> info@joyerialuxury.com</p>
+        <p>⏰ <strong>Horarios:</strong> Lunes a Viernes (09:00 - 18:00)</p>
+        
+        <hr style="border-color: #eee;">
+        
+        <h3 style="text-align: center;">Envíanos un Mensaje</h3>
+        <form style="display: flex; flex-direction: column; gap: 10px;">
+            <input type="text" placeholder="Tu Nombre">
+            <input type="email" placeholder="Tu Correo Electrónico">
+            <textarea placeholder="¿En qué podemos ayudarte?" rows="4"></textarea>
+            <button type="button" class="btn-oro">Enviar Mensaje</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card" style="max-width: 1100px; margin: 30px auto; padding: 25px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); padding-bottom: 15px; margin-bottom: 25px;">
+        <h2 style="color: var(--black); margin: 0; font-family: 'Playfair Display', serif;">
+            💎 PANEL DE INVENTARIO - JOYERÍA LUXURY 💎
+        </h2>
+        <a href="{{ url_for('formulario_producto') }}" class="btn-oro" style="text-decoration: none; padding: 12px 25px; font-weight: bold; border-radius: 5px;">
+            + AGREGAR NUEVA PIEZA
+        </a>
+    </div>
+
+    <div style="background-color: #fcf8e3; border-left: 5px solid var(--gold); padding: 15px; margin-bottom: 20px;">
+        <p style="margin: 0; color: #8a6d3b; font-size: 0.95em;">
+            <strong>Nota de Persistencia:</strong> Los cambios realizados aquí se sincronizan automáticamente con la Base de Datos SQLite y los archivos de respaldo (JSON, CSV, TXT) en la carpeta <code>data/</code>.
+        </p>
+    </div>
+
+    <table class="styled-table" style="width: 100%; border-collapse: collapse; background-color: white;">
+        <thead>
+            <tr style="background-color: var(--black); color: var(--gold); text-align: left;">
+                <th style="padding: 15px;">REF. ID</th>
+                <th style="padding: 15px;">DESCRIPCIÓN DE LA JOYA</th>
+                <th style="padding: 15px;">MATERIAL PRECIOSO</th>
+                <th style="padding: 15px; text-align: center;">EXISTENCIAS</th>
+                <th style="padding: 15px; text-align: right;">VALOR UNITARIO</th>
+                <th style="padding: 15px; text-align: center;">ACCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for j in lista %}
+            <tr style="border-bottom: 1px solid #eee; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#fffbf2'" onmouseout="this.style.backgroundColor='transparent'">
+                <td style="padding: 15px; color: #7f8c8d; font-weight: bold;">#{{ j.id }}</td>
+                <td style="padding: 15px;"><strong>{{ j.nombre }}</strong></td>
+                <td style="padding: 15px;">
+                    <span style="border: 1px solid var(--gold); padding: 3px 10px; border-radius: 15px; font-size: 0.85em; color: #b8962d;">
+                        {{ j.material }}
+                    </span>
+                </td>
+                <td style="padding: 15px; text-align: center;">
+                    {% if j.cantidad < 5 %}
+                        <span style="color: #e74c3c; font-weight: bold;">{{ j.cantidad }} (Stock Bajo)</span>
+                    {% else %}
+                        {{ j.cantidad }} unidades
+                    {% endif %}
+                </td>
+                <td style="padding: 15px; text-align: right; font-weight: bold; color: #2c3e50;">${{ "{:,.2f}".format(j.precio) }}</td>
+                <td style="padding: 15px; text-align: center;">
+                    <button style="background: none; border: none; color: #3498db; cursor: pointer; margin-right: 10px;">✏️ Editar</button>
+                    <button style="background: none; border: none; color: #e74c3c; cursor: pointer;">🗑️ Eliminar</button>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" style="text-align: center; padding: 50px; color: #95a5a6;">
+                    <p style="font-size: 1.2em;">No hay registros disponibles en el inventario.</p>
+                    <a href="{{ url_for('formulario_producto') }}" style="color: var(--gold); font-weight: bold;">Haz clic aquí para registrar tu primera joya.</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="margin-top: 30px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 20px;">
+        <p style="font-size: 0.85em; color: #999;">Sistema Administrativo Luxury | Ecuador 2026</p>
+        <div>
+            <a href="{{ url_for('ver_datos_archivos') }}" style="color: #2c3e50; text-decoration: none; font-size: 0.9em; margin-right: 20px;">📂 Ver Archivo JSON</a>
+            <a href="#" style="color: #2c3e50; text-decoration: none; font-size: 0.9em;">📊 Reporte CSV</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

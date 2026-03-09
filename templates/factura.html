@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card" style="max-width: 500px; border: 2px solid var(--gold); padding: 40px;">
+    <div style="text-align: center; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+        <h2 style="color: var(--gold);">FACTURA DE VENTA</h2>
+        <p>Joyería Luxury - Malchinguí</p>
+    </div>
+    <div style="margin-top: 20px;">
+        <p><strong>RUC:</strong> 1790001234001</p>
+        <p><strong>Cliente:</strong> Consumidor Final</p>
+        <hr>
+        <table style="width: 100%;">
+            <tr>
+                <td><strong>Concepto:</strong></td>
+                <td style="text-align: right;">Anillo de Oro 18k</td>
+            </tr>
+            <tr>
+                <td><strong>Precio:</strong></td>
+                <td style="text-align: right;">$450.00</td>
+            </tr>
+        </table>
+        <hr>
+        <h3 style="text-align: right; color: var(--gold);">TOTAL: $450.00</h3>
+    </div>
+    <button onclick="window.print()" class="btn-oro" style="width: 100%; margin-top: 20px;">IMPRIMIR COMPROBANTE</button>
+</div>
+{% endblock %}

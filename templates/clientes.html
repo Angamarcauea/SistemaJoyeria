@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h2 style="color: var(--gold); text-align: center;">Directorio de Clientes VIP</h2>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Cédula/RUC</th>
+                <th>Nombre Completo</th>
+                <th>Email</th>
+                <th>Nivel</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>172XXXXXXX</td>
+                <td>Luis John Defas</td>
+                <td>luis@correo.com</td>
+                <td><span style="color: gold;">★ Gold</span></td>
+            </tr>
+            <tr>
+                <td>175XXXXXXX</td>
+                <td>Melissa Cumbal</td>
+                <td>melissa@correo.com</td>
+                <td><span style="color: silver;">★ Silver</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h2 style="color: var(--gold);">Registros en Archivo JSON (Respaldo)</h2>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Material</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for j in lista %}
+            <tr>
+                <td>{{ j.nombre }}</td>
+                <td>{{ j.material }}</td>
+                <td>{{ j.cantidad }}</td>
+                <td>${{ j.precio }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
