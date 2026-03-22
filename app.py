@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mi_llave_secreta_luxury_2026'  # Necesaria para sesiones y mensajes flash
 
 # 1. CONFIGURACIÓN DE MYSQL (Ajustada a tu base 'joyeria_db' de XAMPP)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3307/joyeria_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'mysql+mysqlconnector://root@localhost:3307/joyeria_db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
