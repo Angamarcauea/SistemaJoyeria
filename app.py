@@ -133,17 +133,25 @@ def ver_datos_archivos():
                 items = []
     return render_template('datos.html', lista=items)
 
-@app.route('/clientes') @login_required
-def mostrar_clientes(): return render_template('clientes.html')
+@app.route('/clientes')
+@login_required
+def mostrar_clientes():
+    return render_template('clientes.html')
 
-@app.route('/about') @login_required
-def about(): return render_template('about.html')
+@app.route('/about')
+@login_required
+def about():
+    return render_template('about.html')
 
-@app.route('/contactos') @login_required
-def contactos(): return render_template('contactos.html')
+@app.route('/contactos')
+@login_required
+def contactos():
+    return render_template('contactos.html')
 
-@app.route('/factura') @login_required
-def ver_factura(): return render_template('factura.html')
+@app.route('/factura')
+@login_required
+def ver_factura():
+    return render_template('factura.html')
 
 # --- INICIO DE LA APLICACIÓN (CRÍTICO PARA RENDER) ---
 # Esto queda fuera del bloque 'if' para que Render cree las tablas al arrancar
