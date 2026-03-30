@@ -1,19 +1,23 @@
 import os
 import json
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, send_file
 from flask_sqlalchemy import SQLAlchemy
-# Importaciones para Autenticación
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+
+# CONEXIÓN CON TUS CAPAS
+from models.joya import db, Joya
+from services.joya_service import JoyaService
+from services.reporte_service import ReporteService
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mi_llave_secreta_luxury_2026'
 
-# 1. CONFIGURACIÓN FLEXIBLE DE BASE DE DATOS
-# Usa DATABASE_URL de Render si existe, de lo contrario usa tu MySQL local
+# 1. Configuración de la base de datos
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'mysql+mysqlconnector://root@localhost:3307/joyeria_db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
+# 2. INICIALIZAR LA BASE DE DATOS
+db.init_app(app)
 
 # 2. CONFIGURACIÓN DE FLASK-LOGIN
 login_manager = LoginManager(app)
@@ -28,17 +32,10 @@ class Usuario(UserMixin, db.Model):
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
 
-class Joya(db.Model):
-    __tablename__ = 'joyas'
-    id = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String(100))
-    material = db.Column(db.String(50))
-    cantidad = db.Column(db.Integer)
-    precio = db.Column(db.Float)
-
 @login_manager.user_loader
 def load_user(user_id):
-    return Usuario.query.get(int(user_id))
+    # Esto es lo más moderno en SQLAlchemy 2.0
+    return db.session.get(Usuario, int(user_id))
 
 # --- PERSISTENCIA JSON ---
 def guardar_persistencia_multiple(n, m, c, p):
@@ -101,8 +98,8 @@ def index():
 
 @app.route('/inventario')
 @login_required
-def mostrar_inventario():
-    lista_joyas = Joya.query.all()
+def mostrar_productos():  # <--- Cambia 'mostrar_inventario' por 'mostrar_productos'
+    lista_joyas = JoyaService.listar_todo()
     return render_template('inventario.html', lista=lista_joyas)
 
 @app.route('/producto_form', methods=['GET', 'POST'])
@@ -113,10 +110,13 @@ def formulario_producto():
         m = request.form['material']
         c = int(request.form['cantidad'])
         p = float(request.form['precio'])
-        nueva = Joya(nombre=n, material=m, cantidad=c, precio=p)
-        db.session.add(nueva)
-        db.session.commit()
+
+        # Llamamos al servicio para crear la joya
+        JoyaService.crear_joya(n, m, c, p)
+
+        # Guardamos en JSON (persistencia que ya tenías)
         guardar_persistencia_multiple(n, m, c, p)
+
         return redirect(url_for('mostrar_inventario'))
     return render_template('producto_form.html')
 
@@ -153,11 +153,18 @@ def contactos():
 def ver_factura():
     return render_template('factura.html')
 
+@app.route('/descargar_reporte')
+@login_required
+def descargar_reporte():
+    joyas = JoyaService.listar_todo()
+    ruta_pdf = ReporteService.generar_pdf(joyas)
+    return send_file(ruta_pdf, as_attachment=True)
+
 # --- INICIO DE LA APLICACIÓN (CRÍTICO PARA RENDER) ---
-# Esto queda fuera del bloque 'if' para que Render cree las tablas al arrancar
 with app.app_context():
     db.create_all()
 
 if __name__ == '__main__':
-    # Esto solo corre en local (PyCharm)
     app.run(debug=True)
+
+
