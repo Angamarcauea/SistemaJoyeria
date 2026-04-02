@@ -1,0 +1,20 @@
+[
+    {
+        "nombre": "Collar mariposa ",
+        "material": "Plata 925",
+        "cantidad": 2,
+        "precio": 6.0
+    },
+    {
+        "nombre": "Anillo ",
+        "material": "Oro 18k",
+        "cantidad": 5,
+        "precio": 25.0
+    },
+    {
+        "nombre": "Collar ",
+        "material": "Platino",
+        "cantidad": 3,
+        "precio": 5.0
+    }
+]

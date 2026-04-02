@@ -100,7 +100,7 @@ def index():
 @login_required
 def mostrar_productos():  # <--- Cambia 'mostrar_inventario' por 'mostrar_productos'
     lista_joyas = JoyaService.listar_todo()
-    return render_template('inventario.html', lista=lista_joyas)
+    return render_template('productos.html', lista=lista_joyas)
 
 @app.route('/producto_form', methods=['GET', 'POST'])
 @login_required
@@ -117,7 +117,7 @@ def formulario_producto():
         # Guardamos en JSON (persistencia que ya tenías)
         guardar_persistencia_multiple(n, m, c, p)
 
-        return redirect(url_for('mostrar_inventario'))
+        return redirect(url_for('mostrar_productos'))
     return render_template('producto_form.html')
 
 @app.route('/datos')
@@ -163,6 +163,30 @@ def descargar_reporte():
 # --- INICIO DE LA APLICACIÓN (CRÍTICO PARA RENDER) ---
 with app.app_context():
     db.create_all()
+
+    @app.route('/editar/<int:id>', methods=['GET', 'POST'])
+    @login_required
+    def editar_joya(id):
+        from models.joya import Joya
+        joya = Joya.query.get_or_404(id)
+        if request.method == 'POST':
+            joya.nombre = request.form['nombre']
+            joya.material = request.form['material']
+            joya.cantidad = int(request.form['cantidad'])
+            joya.precio = float(request.form['precio'])
+            db.session.commit()
+            return redirect(url_for('mostrar_productos'))
+        return render_template('producto_form.html', joya=joya)
+
+
+    @app.route('/eliminar/<int:id>')
+    @login_required
+    def eliminar_joya_ruta(id):
+        from models.joya import Joya
+        joya = Joya.query.get_or_404(id)
+        db.session.delete(joya)
+        db.session.commit()
+        return redirect(url_for('mostrar_productos'))
 
 if __name__ == '__main__':
     app.run(debug=True)
