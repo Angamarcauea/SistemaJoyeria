@@ -18,6 +18,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # 2. INICIALIZAR LA BASE DE DATOS
 db.init_app(app)
+with app.app_context():
+    from models.joya import Joya, Categoria
+    db.create_all() # Crea las tablas en Render automáticamente
 
 # 2. CONFIGURACIÓN DE FLASK-LOGIN
 login_manager = LoginManager(app)
