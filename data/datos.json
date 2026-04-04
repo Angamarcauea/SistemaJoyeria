@@ -16,5 +16,11 @@
         "material": "Platino",
         "cantidad": 3,
         "precio": 5.0
+    },
+    {
+        "nombre": "Anillo",
+        "material": "Oro 18k",
+        "cantidad": 5,
+        "precio": 30.0
     }
 ]
